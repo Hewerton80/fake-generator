@@ -3,18 +3,17 @@ import dynamic from 'next/dynamic'
 import { useState, useCallback, useMemo, ChangeEvent, useEffect, FormEvent } from 'react'
 import FormGroup from '../components/ui/forms/FormGroup'
 import FormLabel from '../components/ui/forms/FormLabel'
-import InputText from '../components/ui/forms/InputText'
 import Select from '../components/ui/forms/Select'
-import { Card, CardBody, CardHeader, CardTitle } from '../components/ui/layout/Card'
 import { getRange } from '../utils/getRange'
 import { AvailableGroupTypes, fieldTypeOptios, IRowDatas } from '../utils/fieldTypeOptios'
-import Button from '../components/ui/forms/Button'
 import { generateFateDates } from '../utils/generateFateDates'
-import IconButton from '../components/ui/forms/IconButton'
 import { FaPlus } from 'react-icons/fa'
 import { BsXLg } from 'react-icons/bs'
 import Form from '../components/ui/forms/Form'
 import classNames from 'classnames'
+import { Card, Input, IconButton, Button } from 'hikari-ui'
+import InputText from '../components/ui/forms/InputText'
+
 const ReactJson = dynamic(() => import('react-json-view'), {
   ssr: false,
 })
@@ -149,7 +148,7 @@ const Home: NextPage = () => {
       return (
         <div className="flex items-center space-x-2" key={i + 'row'}>
           <FormGroup className="max-w-[240px] w-full">
-            <InputText
+            <Input
               value={rowDatas[i].fieldName}
               required
               onChange={(e) => handleChangeFieldName({ index: i, value: e.target.value })}
@@ -167,7 +166,7 @@ const Home: NextPage = () => {
           </FormGroup>
           {!isFirstIndex && (
             <IconButton
-              variant="danger"
+              variantStyle="danger"
               icon={<BsXLg />}
               onClick={() => handleRemoveRowByIndex(i)}
             />
@@ -195,10 +194,10 @@ const Home: NextPage = () => {
   return (
     <div className="flex justify-center w-full h-full">
       <Card className="max-w-7xl w-full mb-16">
-        <CardHeader>
-          <CardTitle>Gerador de dados fakes</CardTitle>
-        </CardHeader>
-        <CardBody>
+        <Card.Header>
+          <Card.Title>Gerador de dados fakes</Card.Title>
+        </Card.Header>
+        <Card.Body>
           <Form className="mb-4" onSubmit={handleGenerateFakeDatas}>
             <div className="flex flex-col space-y-2 mb-12">
               <div className="flex items-end space-x-2">
@@ -206,10 +205,18 @@ const Home: NextPage = () => {
                 <FormLabel className="max-w-[240px] w-full">Tipo do Campo</FormLabel>
               </div>
               {rowDataListElement}
-              <IconButton variant="primary" icon={<FaPlus />} onClick={handleAddRow} />
+              <IconButton
+                variantStyle="primary"
+                icon={<FaPlus />}
+                onClick={handleAddRow}
+              />
             </div>
             <div className="flex items-end space-x-4">
-              <Button variant="primary" type="submit" isLoading={isGeneringFakeDatas}>
+              <Button
+                variantStyle="primary"
+                type="submit"
+                isLoading={isGeneringFakeDatas}
+              >
                 Gerar dados fakes
               </Button>
               <FormGroup className="max-w-[240px] w-full">
@@ -226,7 +233,7 @@ const Home: NextPage = () => {
             </div>
           </Form>
           {reactJsonViewElement}
-        </CardBody>
+        </Card.Body>
       </Card>
     </div>
   )
