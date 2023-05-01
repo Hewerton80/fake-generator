@@ -9,12 +9,12 @@ export interface IRowDatas {
 
 export type AvailableGroupTypes = keyof typeof faker
 
-interface FieldTypeOptios {
+interface fieldTypeOptions {
   type: AvailableGroupTypes
   subtypes: string[]
 }
 
-export const fieldTypeOptios: FieldTypeOptios[] = [
+export const fieldTypeOptions: fieldTypeOptions[] = [
   {
     type: 'name',
     subtypes: removeFromArray(Object.keys(faker.name), 'faker'),
@@ -68,3 +68,19 @@ export const fieldTypeOptios: FieldTypeOptios[] = [
     subtypes: removeFromArray(Object.keys(faker.word), 'faker'),
   },
 ]
+
+type FieldTypeOptionsMapObject = {
+  [Property in string]: AvailableGroupTypes
+}
+
+let fieldTypeOptionsMapObject: FieldTypeOptionsMapObject = {}
+
+fieldTypeOptions.forEach((currentType) => {
+  currentType.subtypes.forEach((subtype) => {
+    fieldTypeOptionsMapObject[subtype] = currentType.type
+  })
+})
+
+export const getTypeBySubtype = (subtype: string) => {
+  return fieldTypeOptionsMapObject[subtype]
+}
