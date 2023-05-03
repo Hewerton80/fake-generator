@@ -1,8 +1,9 @@
 import { HTMLAttributes, useEffect, useState } from 'react'
 // import Header from '../../common/Header'
-import { AppBar, toogleTheme } from 'hikari-ui'
+import { AppBar, IconButton, toogleTheme } from 'hikari-ui'
+import { FaRegMoon, FaRegSun } from 'react-icons/fa'
 import classNames from 'classnames'
-import ThemeSwitch from '../../ui/forms/ThemeSwitch'
+// import ThemeSwitch from '../../ui/forms/ThemeSwitch'
 interface MainTemplateProps extends HTMLAttributes<HTMLDivElement> {}
 
 function MainTemplate({ children, ...rest }: MainTemplateProps) {
@@ -36,10 +37,17 @@ function MainTemplate({ children, ...rest }: MainTemplateProps) {
             Gerador de dados fakes
           </h2>
           <div className="flex items-center">
-            <ThemeSwitch
+            {/* <ThemeSwitch
               id="theme-ThemeSwitch"
               checked={theme === 'dark'}
               onChange={(e) => setTheme(e.target.checked ? 'dark' : 'light')}
+            /> */}
+            <IconButton
+              onClick={() =>
+                setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'))
+              }
+              variantStyle="info-ghost"
+              icon={theme === 'dark' ? <FaRegSun /> : <FaRegMoon />}
             />
           </div>
         </AppBar.Tool>

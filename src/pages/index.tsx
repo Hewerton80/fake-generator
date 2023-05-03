@@ -1,9 +1,6 @@
 import type { NextPage } from 'next'
 import dynamic from 'next/dynamic'
 import { useState, useCallback, useMemo, ChangeEvent, useEffect, FormEvent } from 'react'
-import FormGroup from '../components/ui/forms/FormGroup'
-import FormLabel from '../components/ui/forms/FormLabel'
-import Select from '../components/ui/forms/Select'
 import { getRange } from '../utils/getRange'
 import {
   AvailableGroupTypes,
@@ -14,17 +11,15 @@ import {
 import { generateFateDates } from '../utils/generateFateDates'
 import { FaPlus } from 'react-icons/fa'
 import { BsXLg } from 'react-icons/bs'
-import Form from '../components/ui/forms/Form'
 import classNames from 'classnames'
 import {
   Card,
   Input,
   IconButton,
   Button,
-  Select as HikariSelect,
+  Select as Select,
   SelectOption,
 } from 'hikari-ui'
-import InputText from '../components/ui/forms/InputText'
 
 const ReactJson = dynamic(() => import('react-json-view'), {
   ssr: false,
@@ -81,38 +76,19 @@ const initialRowsDatas: IRowDatas[] = [
 
 const Home: NextPage = () => {
   const [rowDatas, setRowDatas] = useState<IRowDatas[]>(initialRowsDatas)
-  const [hikariRowDatas, setHikariRowDatas] = useState<IRowDatas[]>(initialRowsDatas)
   const [numberRowToGanerate, setNumberRowToGanerate] = useState('10')
   const [generedfakeDatas, setGeneredfakeDatas] = useState<any[]>([])
 
   const [isGeneringFakeDatas, setIsGeneringFakeDatas] = useState(false)
 
-  const selectOptions = useMemo(
-    () =>
-      fieldTypeOptions.map((option, i) => (
-        <optgroup className="text-dark" key={option.type + i} label={option.type}>
-          {option.subtypes.map((subtype, j) => (
-            <option className="text-dark" key={subtype + i + j} value={subtype}>
-              {subtype}
-            </option>
-          ))}
-        </optgroup>
-      )),
-    []
-  )
-
-  const hikariSelectOptions = useMemo<SelectOption[]>(() => {
-    let hikariSelectOptionsTmp: SelectOption[] = []
-    fieldTypeOptions.forEach((fieldTypeOption) => {
-      hikariSelectOptionsTmp.push({
-        label: fieldTypeOption.type,
-        options: fieldTypeOption.subtypes.map((subtype) => ({
-          label: subtype,
-          value: subtype,
-        })),
-      })
-    })
-    return hikariSelectOptionsTmp
+  const selectOptions = useMemo<SelectOption[]>(() => {
+    return fieldTypeOptions.map((fieldTypeOption) => ({
+      label: fieldTypeOption.type,
+      options: fieldTypeOption.subtypes.map((subtype) => ({
+        label: subtype,
+        value: subtype,
+      })),
+    }))
   }, [])
 
   const handleChangeFieldName = useCallback(({ index, value }: IChangeFieldNameValue) => {
@@ -186,14 +162,13 @@ const Home: NextPage = () => {
       const isFirstIndex = i === 0
       return (
         <div className="flex items-center space-x-2" key={i + 'row'}>
-          <FormGroup className="max-w-[240px] w-full">
-            <Input
-              value={rowDatas[i].fieldName}
-              required
-              onChange={(e) => handleChangeFieldName({ index: i, value: e.target.value })}
-              autoFocus
-            />
-          </FormGroup>
+          <Input
+            className="max-w-[240px] w-full"
+            value={rowDatas[i].fieldName}
+            required
+            onChange={(e) => handleChangeFieldName({ index: i, value: e.target.value })}
+            autoFocus
+          />
           {/* <FormGroup className="max-w-[240px] w-full">
             <Select
               value={rowDatas[i].fieldType}
@@ -203,15 +178,13 @@ const Home: NextPage = () => {
               {selectOptions}
             </Select>
           </FormGroup> */}
-          <HikariSelect
+          <Select
             className="max-w-[240px] w-full"
             value={{ value: rowDatas[i].fieldType, label: rowDatas[i].fieldType }}
             isAutocomplite
-            options={hikariSelectOptions}
-            onChange={
-              (newOptions: SelectOption) =>
-                handleChangeFieldTypeHicari({ index: i, value: newOptions?.value! })
-              // handleChangeFieldType({ index: i, e })}
+            options={selectOptions}
+            onChangeSingleOption={(newOptions) =>
+              handleChangeFieldTypeHicari({ index: i, value: newOptions.value })
             }
           />
           {!isFirstIndex && (
@@ -248,7 +221,7 @@ const Home: NextPage = () => {
           <Card.Title>Gerador de dados fakes</Card.Title>
         </Card.Header>
         <Card.Body>
-          <Form className="mb-4" onSubmit={handleGenerateFakeDatas}>
+          <form className="flex flex-col w-full mb-4" onSubmit={handleGenerateFakeDatas}>
             <div className="flex flex-col space-y-2 mb-12">
               <div className="flex items-end space-x-2">
                 <p className="max-w-[240px] w-full text-sm">Nome do Campo</p>
@@ -282,15 +255,15 @@ const Home: NextPage = () => {
               </FormGroup> */}
               <Input
                 type="number"
-                // min={1}
-                // max={150}
+                min={1}
+                max={150}
                 value={numberRowToGanerate}
                 // onWheel={(e) => e.currentTarget.blur()}
                 onChange={(e) => setNumberRowToGanerate(e.target.value)}
                 label="Número de dados"
               />
             </div>
-          </Form>
+          </form>
           {reactJsonViewElement}
         </Card.Body>
       </Card>
