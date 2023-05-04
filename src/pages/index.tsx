@@ -242,23 +242,11 @@ const Home: NextPage = () => {
               >
                 Gerar dados fakes
               </Button>
-              {/* <FormGroup className="max-w-[240px] w-full">
-                <FormLabel>Número de dados</FormLabel>
-                <InputText
-                  type="number"
-                  min={1}
-                  max={150}
-                  value={numberRowToGanerate}
-                  onWheel={(e) => e.currentTarget.blur()}
-                  onChange={(e) => setNumberRowToGanerate(e.target.value)}
-                />
-              </FormGroup> */}
               <Input
                 type="number"
                 min={1}
                 max={150}
                 value={numberRowToGanerate}
-                // onWheel={(e) => e.currentTarget.blur()}
                 onChange={(e) => setNumberRowToGanerate(e.target.value)}
                 label="Número de dados"
               />
