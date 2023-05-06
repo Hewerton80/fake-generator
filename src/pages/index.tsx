@@ -189,6 +189,7 @@ const Home: NextPage = () => {
           />
           {!isFirstIndex && (
             <IconButton
+              type="button"
               variantStyle="danger"
               icon={<BsXLg />}
               onClick={() => handleRemoveRowByIndex(i)}
@@ -232,6 +233,7 @@ const Home: NextPage = () => {
                 variantStyle="primary"
                 icon={<FaPlus />}
                 onClick={handleAddRow}
+                type="button"
               />
             </div>
             <div className="flex items-end space-x-4">
