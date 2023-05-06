@@ -8,9 +8,9 @@ interface IGenerateFakeDatasArgs {
 }
 export const generateFateDates = async ({ numRows, fields }: IGenerateFakeDatasArgs) => {
   const rowDates = []
-  console.log('fields: ', fields)
   await dalay(0)
-  for (let i = 0; i < numRows; i++) {
+  const handlededNumRows = numRows > 150 ? 150 : numRows
+  for (let i = 0; i < handlededNumRows; i++) {
     let fieldsNames: any = {}
     for (const field of fields) {
       // @ts-ignore:next-line
